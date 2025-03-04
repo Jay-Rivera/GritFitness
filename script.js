@@ -1,172 +1,94 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const createWorkoutContainer = document.querySelector(".create__workout");
-  const createWorkoutButton = document.getElementById("create-workout");
-  const addExerciseContainer = document.querySelector(".excercise__container");
-  const addExerciseButton = document.getElementById("add__excercise--btn");
-  const allWorkoutsContainer = document.querySelector(".all__workouts");
+const workoutName = document.getElementById("workout-name");
+const workoutType = document.getElementById("workout-type");
+const createWorkoutBtn = document.getElementById("create-workout");
+const addExcerciseContainer = document.querySelector(".excercise__container");
+const addExcerciseBtn = document.querySelector(".add__excercise--btn");
+const deleteWorkoutBtn = document.querySelector(".delete__workout--btn");
+const deleteExcerciseBtn = document.querySelector(".delete__excercise--btn");
+const allWorkoutsContainer = document.querySelector(".all__workouts");
 
-  // Ensure the add exercise container is hidden initially
-  addExerciseContainer.style.display = "none";
+const allWorkouts = [];
 
-  let workouts = JSON.parse(localStorage.getItem("workouts")) || [];
-  let currentWorkout = null;
-
-  // Save workouts to local storage
-  const saveWorkouts = () => {
-    localStorage.setItem("workouts", JSON.stringify(workouts));
-  };
-
-  // Show/hide elements
-  const showElement = (element) => (element.style.display = "block");
-  const hideElement = (element) => (element.style.display = "none");
-
-  // Create new workout
-  createWorkoutButton.addEventListener("click", () => {
-    const workoutName = document.getElementById("workout-name").value.trim();
-    const workoutType = document.getElementById("workout-type").value.trim();
-
-    if (!workoutName || !workoutType) {
-      alert("Please enter both a workout name and type.");
-      return;
-    }
-
-    // Create a new workout object
-    currentWorkout = {
-      id: Date.now(),
-      name: workoutName,
-      type: workoutType,
-      exercises: [],
+const createWorkout = () => {
+  if (workoutName.value === "" || workoutType.value === "") {
+    alert("Please fill in all fields");
+    return;
+  } else {
+    const workout = {
+      name: workoutName.value,
+      type: workoutType.value,
+      excercises: [],
     };
 
-    workouts.push(currentWorkout);
-    saveWorkouts();
-
-    // Hide "Create Workout" section and show "Add Exercise" section
-    hideElement(createWorkoutContainer);
-    showElement(addExerciseContainer);
-  });
-
-  // Add new exercise
-  addExerciseButton.addEventListener("click", () => {
-    if (!currentWorkout) {
-      alert("Please create a workout first.");
-      return;
-    }
-
-    // Corrected input selections
-    const exerciseName = document.getElementById("exercise-name").value.trim();
-    const sets = document.getElementById("exercise-sets").value.trim();
-    const weight = document.getElementById("exercise-weight").value.trim();
-    const reps = document.getElementById("exercise-reps").value.trim();
-
-    if (!exerciseName || !sets || !weight || !reps) {
-      alert("Please fill in all exercise fields.");
-      return;
-    }
-
-    const newExercise = {
-      id: Date.now(),
-      name: exerciseName,
-      sets: sets,
-      weight: weight,
-      reps: reps,
-    };
-
-    // Find the last added workout and add exercise
-    workouts[workouts.length - 1].exercises.push(newExercise);
-
-    console.log(workouts);
-    // Clear input fields
-    document.getElementById("exercise-name").value = "";
-    document.getElementById("exercise-sets").value = "";
-    document.getElementById("exercise-weight").value = "";
-    document.getElementById("exercise-reps").value = "";
-
-    saveWorkouts();
-
-    // Refresh UI
+    allWorkouts.push(workout);
+    workoutName.value = "";
+    workoutType.value = "";
     renderWorkouts();
-  });
+  }
+};
 
-  // Render workouts in the "All Workouts" section
-  function renderWorkouts() {
-    allWorkoutsContainer.innerHTML = "";
+createWorkoutBtn.addEventListener("click", createWorkout);
 
-    if (workouts.length === 0) {
-      allWorkoutsContainer.innerHTML = "<p>No workouts added yet.</p>";
-      return;
+const renderWorkouts = () => {
+  allWorkoutsContainer.innerHTML = "";
+
+  allWorkouts.forEach((workout) => {
+    let workoutHTML = `
+      <div class="workout__list">
+        <div class="workout__list--title">
+          <h2>${workout.name}</h2>
+          <p>${workout.type}</p>
+        </div>
+    `;
+
+    if (workout.excercises.length > 0) {
+      workoutHTML += workout.excercises
+        .map((exercise) => {
+          let exerciseHTML = `
+            <div class="workout__excercise--container">
+              <h3>${exercise.name}</h3>
+              <div class="excercise__group">
+          `;
+
+          for (let i = 0; i < exercise.sets; i++) {
+            exerciseHTML += `
+              <div class="excercise__info">
+                <p>Set # ${i + 1}</p>
+                <div class="input__div">
+                    <p>Weight:</p>
+                    <input value="${exercise.weight}"></input>
+                </div>
+                <div class="input__div">
+                    <p>Reps:</p>
+                    <input value="${exercise.reps}"></input>
+                </div>
+              </div>
+            `;
+          }
+
+          exerciseHTML += `
+              </div>
+              <button class="delete__excercise--btn">Delete</button>
+            </div>
+          `;
+
+          return exerciseHTML;
+        })
+        .join("");
     }
 
-    workouts.forEach((workout, workoutIndex) => {
-      const workoutDiv = document.createElement("div");
-      workoutDiv.classList.add("workout__list");
+    workoutHTML += `
+      <div class="btns__section">
+        <button class="add__excercise--btn">Add Exercise</button>
+        <button class="delete__workout--btn">Delete Workout</button>
+      </div>
+    </div>
+    `;
 
-      workoutDiv.innerHTML = `
-                <div class="workout__list--title">
-                    <h2>${workout.name}</h2>
-                    <p>${workout.type}</p>
-                </div>
-                <div class="workout__excercise--container">
-                    ${workout.exercises
-                      .map(
-                        (exercise, index) => `
-                            <h3>${exercise.name}</h3>
-                            <div class="excercise__group">
-                                <div class="excercise__info">
-                                    <p>Set # ${index + 1}</p>
-                                    <div class="input__div">
-                                        <p>Weight:</p>
-                                        <input value="${
-                                          exercise.weight
-                                        } lbs" disabled>
-                                    </div>
-                                    <div class="input__div">
-                                        <p>Reps:</p>
-                                        <input value="${
-                                          exercise.reps
-                                        }" disabled>
-                                    </div>
-                                </div>
-                            </div>
-                            <button class="delete__excercise--btn" data-workout-index="${workoutIndex}" data-exercise-index="${index}">Delete Exercise</button>
-                        `
-                      )
-                      .join("")}
-                    <button class="delete__workout--btn" data-workout-index="${workoutIndex}">Delete Workout</button>
-                </div>
-            `;
+    allWorkoutsContainer.innerHTML += workoutHTML;
+  });
+};
 
-      allWorkoutsContainer.appendChild(workoutDiv);
-    });
-
-    // Delete exercise button event listeners
-    document.querySelectorAll(".delete__excercise--btn").forEach((button) => {
-      button.addEventListener("click", (event) => {
-        const workoutIndex = event.target.getAttribute("data-workout-index");
-        const exerciseIndex = event.target.getAttribute("data-exercise-index");
-        workouts[workoutIndex].exercises.splice(exerciseIndex, 1);
-        saveWorkouts();
-        renderWorkouts();
-      });
-    });
-
-    // Delete workout button event listeners
-    document.querySelectorAll(".delete__workout--btn").forEach((button) => {
-      button.addEventListener("click", (event) => {
-        const workoutIndex = event.target.getAttribute("data-workout-index");
-        workouts.splice(workoutIndex, 1);
-        saveWorkouts();
-        renderWorkouts();
-
-        // Show the "Create Workout" section again if there are no workouts left
-        if (workouts.length === 0) {
-          showElement(createWorkoutContainer);
-          hideElement(addExerciseContainer);
-        }
-      });
-    });
-  }
-
-  // Load workouts from local storage on page load
-  renderWorkouts();
-});
+// Need to implement the add excercise function in order to add this to the corresponding workout.
+//  Thinking that i need to add an id to the workout object to easily track it.
+addExcerciseBtn.addEventListener("click", (element) => {});

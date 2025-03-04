@@ -20,11 +20,11 @@
         <h2 class="create__workout--heading">Create a new Workout!</h2>
         <div class="input__div">
             <p class="workout__name--text">Workout Name:</p>
-            <input type="text" class="" id="workout-name">
+            <input type="text" class="" id="workout-name" placeholder="e.g. Leg Destroyer">
         </div>
         <div class="input__div">
             <p class="workout__type--text">Workout type:</p>
-            <input type="text" class="" id="workout-type">
+            <input type="text" class="" id="workout-type" placeholder="e.g. Chest, Back, Legs, Upper Body">
         </div>
         <button class="create__workout--button" id="create-workout">Create Workout</button>
     </div>
@@ -46,102 +46,15 @@
             <p>Number of Reps:</p>
             <input type="number" id="excercise-reps" required>
         </div>
+        <div class="btn__section">
+            <button id="add__excercise--btn">Add Excercise</button>
+            <button id="cancel__excercise--btn">Cancel</button>
 
-        <button id="add__excercise--btn">Add Excercise</button>
+        </div>
     </div>
 
     <div class="all__workouts">
-        <div class="workout__list">
-            <div class="workout__list--title">
-                <h2>Workout Name</h2>
-                <p>Workout Type</p>
-            </div>
 
-            <div class="workout__excercise--container">
-                <h3>Excercise Name</h3>
-                <div class="excercise__group">
-
-                    <div class="excercise__info">
-                        <p>Set # 1</p>
-                        <div class="input__div">
-                            <p>Weight:</p>
-                            <input id="" value="185lbs"></input>
-                        </div>
-                        <div class="input__div">
-                            <p>Reps:</p>
-                            <input value="10"></input>
-                        </div>
-                    </div>
-                    <div class="excercise__info">
-                        <p>Set # 2</p>
-                        <div class="input__div">
-                            <p>Weight:</p>
-                            <input id="" value="185lbs"></input>
-                        </div>
-                        <div class="input__div">
-                            <p>Reps:</p>
-                            <input value="10"></input>
-                        </div>
-                    </div>
-                    <div class="excercise__info">
-                        <p>Set # 3</p>
-                        <div class="input__div">
-                            <p>Weight:</p>
-                            <input id="" value=" 185lbs"></input>
-                        </div>
-                        <div class="input__div">
-                            <p>Reps:</p>
-                            <input value="10"></input>
-                        </div>
-                    </div>
-                </div>
-
-                <button class="delete__excercise--btn">Delete</button>
-            </div>
-            <div class="workout__excercise--container">
-                <h3>Excercise Name</h3>
-                <div class="excercise__group">
-
-                    <div class="excercise__info">
-                        <p>Set # 1</p>
-                        <div class="input__div">
-                            <p>Weight:</p>
-                            <input id="" value="185lbs"></input>
-                        </div>
-                        <div class="input__div">
-                            <p>Reps:</p>
-                            <input value="10"></input>
-                        </div>
-                    </div>
-                    <div class="excercise__info">
-                        <p>Set # 2</p>
-                        <div class="input__div">
-                            <p>Weight:</p>
-                            <input id="" value="185lbs"></input>
-                        </div>
-                        <div class="input__div">
-                            <p>Reps:</p>
-                            <input value="10"></input>
-                        </div>
-                    </div>
-                    <div class="excercise__info">
-                        <p>Set # 3</p>
-                        <div class="input__div">
-                            <p>Weight:</p>
-                            <input id="" value=" 185lbs"></input>
-                        </div>
-                        <div class="input__div">
-                            <p>Reps:</p>
-                            <input value="10"></input>
-                        </div>
-                    </div>
-                </div>
-
-                <button class="delete__excercise--btn">Delete</button>
-            </div>
-
-            <button class="delete__workout--btn">Delete Workout</button>
-        </div>
     </div>
     <script src="script.js"></script>
 </body>

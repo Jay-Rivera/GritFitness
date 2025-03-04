@@ -137,6 +137,7 @@ main {
     text-align: center;
     width: 80%;
     max-width: 600px;
+    min-height: 500px;
     height: auto;
     margin: 0 auto;
     padding: 40px 20px;
@@ -145,7 +146,26 @@ main {
     color: darkslategray;
     border-radius: 20px;
     margin-bottom: 40px;
-    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: all .5s ease;
+    visibility: hidden;
+}
+
+.excercise__container.show {
+    visibility: visible;
+}
+
+.excercise__container h2 {
+    margin-bottom: 20px;
+    font-size: 30px;
+}
+
+.btn__section {
+    margin-top: 40px;
+    ;
 }
 
 
